@@ -1,0 +1,26 @@
+body {
+    background-image: url('33562194.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+#form_login {
+    width: 25%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    resize: none;
+
+    height: 200px;
+    width: 400px;
+    margin-top: 230px;
+    margin-left: 470px;
+
+}
+
+label {
+    color: black;
+}
