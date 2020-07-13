@@ -1,28 +1,54 @@
 package be.intecbrussel.bookyourbench.bookyourbench.Controller;
 
 import be.intecbrussel.bookyourbench.bookyourbench.model.UserInformation;
+import be.intecbrussel.bookyourbench.bookyourbench.service.implementations.AuthenticationServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/")
 public class LoginController {
+
+    private AuthenticationServiceImpl authService;
+
+    @Autowired
+    public void setAuthService(AuthenticationServiceImpl authService) {
+        this.authService = authService;
+    }
 
     @GetMapping("/loginpage")
     public String viewLoginPage() {
         return "loginpage";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String addUser(@ModelAttribute("SpringWeb") UserInformation user,
-                          ModelMap model) {
-        model.addAttribute("user_id", user.getUserId());
-        model.addAttribute("password", user.getPassword());
+    @PostMapping("/authenticateuser")
+    public String authenticateUser(@RequestParam("userid") int userId,
+                                   @RequestParam("password") String password, Model model,
+                                   HttpSession session) {
 
-        return "users";
+        String template = null;
+        UserInformation user = authService.getUser(userId);
+
+        if (user == null) {
+            System.out.println("User doesnt exist.");
+            model.addAttribute("error", "UserId doesn't exist.");
+            template = "loginpage";
+        } else {
+            boolean isAuthenticated = authService.authenticateUser(password, user);
+            if (!isAuthenticated) {
+                System.out.println("Combination of UserId and Password are incorrect.");
+                model.addAttribute("error", "Combination of UserId and Password are incorrect.");
+                template = "loginpage";
+            } else {
+                session.setAttribute("userId", userId);
+                template = "reservationpage";
+            }
+        }
+        return template;
     }
+
 }

@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface SeatingDao {
 
-    public List<Seating> retrieveAvailableSeats(String buildingName, String floorNo, LocalDate date);
+    public List<Seating> retrieveAvailableSeats();
 
     public List<Seating> viewAvailableSeatsAsPerBuildingFloorDate();
 
-    public boolean updateSeatsBookedAndReservableSeats(int id, LocalDate date);
+    public boolean updateSeatsBookedAndReservableSeats(String status, String building, String floor, LocalDate date);
 
 }

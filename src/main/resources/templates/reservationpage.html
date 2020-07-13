@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+<body>
+<h2>Welcome</h2>
+<p>Book your bench for your work</p>
+<div>
+    <form id="reservation-form" method="get" action="/bookseat"></form>
+    <button type="submit" form="reservation-form">Book a seat</button>
+</div>
+<div>
+    <form id="view-reservation-form" method="get" action="/viewreservations"></form>
+    <button type="submit" form="view-reservation-form">View booked seats</button>
+</div>
+</body>
+</html>

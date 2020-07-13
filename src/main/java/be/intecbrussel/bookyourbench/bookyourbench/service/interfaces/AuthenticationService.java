@@ -9,6 +9,6 @@ public interface AuthenticationService {
 
     public List<UserInformation> getAllUsers();
 
-    public UserInformation authenticateUser(int id, String password);
+    public boolean authenticateUser(String password, UserInformation user);
 }
 

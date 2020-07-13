@@ -4,6 +4,7 @@ import be.intecbrussel.bookyourbench.bookyourbench.dao.interfaces.ReservationInf
 import be.intecbrussel.bookyourbench.bookyourbench.model.ReservationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -11,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ReservationDaoJDBCImpl implements ReservationInfoDao {
+@Repository
+public class ReservationDaoImpl implements ReservationInfoDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -19,15 +21,16 @@ public class ReservationDaoJDBCImpl implements ReservationInfoDao {
     @Override
     public List<ReservationInfo> viewExistingReservationsForUserId(int id) {
         String viewReservations = "SELECT * FROM RESERVATION_INFO WHERE USER_ID=?";
-        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(viewReservations);
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(viewReservations, id);
         List<ReservationInfo> reservationInfos = new ArrayList<>();
         mapList.forEach(stringObjectMap -> {
             ReservationInfo reservationInfo = new ReservationInfo();
             reservationInfo.setBuildingName((String) stringObjectMap.get("BUILDING_NAME"));
-            reservationInfo.setFloorNo((String) stringObjectMap.get("FLOOR_NAME"));
+            reservationInfo.setFloorNo((String) stringObjectMap.get("FLOOR_NO"));
             reservationInfo.setDateOfReservation(((Date) stringObjectMap.get("DATE_OF_RESERVATION")).toLocalDate());
             reservationInfo.setUserId(id);
             reservationInfo.setStatus((String) stringObjectMap.get("STATUS"));
+            reservationInfo.setLastUpdatedDate(((Date) stringObjectMap.get("LAST_UPDATED_DATE")).toLocalDate());
             reservationInfos.add(reservationInfo);
         });
         return reservationInfos;

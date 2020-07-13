@@ -6,13 +6,16 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class UserInformationDaoJDBCImpl implements UserInformationDao {
+@Repository
+public class UserInformationDaoImpl implements UserInformationDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -30,7 +33,7 @@ public class UserInformationDaoJDBCImpl implements UserInformationDao {
                 userInfo.setPassword((String) userMap.get("PASSWORD"));
                 userInfo.setFirstName((String) userMap.get("FIRST_NAME"));
                 userInfo.setLastName((String) userMap.get("LAST_NAME"));
-                userInfo.setLastLoggedIn(((Date) userMap.get("LAST_LOGGED_IN")).toLocalDate());
+                userInfo.setLastLoggedIn(((Timestamp) userMap.get("LAST_LOGGED_IN")).toLocalDateTime().toLocalDate());
             }
         } catch (DataAccessException e) {
             System.out.println("User with id : " + id + " not found.");
@@ -55,7 +58,7 @@ public class UserInformationDaoJDBCImpl implements UserInformationDao {
             userInfo.setFirstName((String) usermap.get("FIRST_NAME"));
             userInfo.setLastName((String) usermap.get("LAST_NAME"));
             userInfo.setPassword((String) usermap.get("PASSWORD"));
-            userInfo.setLastLoggedIn(((Date) usermap.get("LAST_LOGGED_IN")).toLocalDate());
+            userInfo.setLastLoggedIn(((Timestamp) usermap.get("LAST_LOGGED_IN")).toLocalDateTime().toLocalDate());
             userList.add(userInfo);
 
         });

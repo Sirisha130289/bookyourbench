@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="viewreservations.css">
+    <meta charset="UTF-8">
+    <title>View Reservations</title>
+</head>
+<body>
+<h2>View your Reservations</h2>
+<div>
+
+    <table>
+        <tr>
+            <th>User Id</th>
+            <th>Date of Reservation</th>
+            <th>Building</th>
+            <th>Floor</th>
+            <th>Status</th>
+            <th>Last Updated Date</th>
+        </tr>
+        <tr th:each="reservation : ${reservations}">
+            <td th:text="${reservation.getUserId()}"></td>
+            <td th:text="${reservation.getDateOfReservation()}"></td>
+            <td th:text="${reservation.getBuildingName()}"></td>
+            <td th:text="${reservation.getFloorNo()}"></td>
+            <td th:text="${reservation.getStatus()}"></td>
+            <td th:text="${reservation.getLastUpdatedDate()}"></td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

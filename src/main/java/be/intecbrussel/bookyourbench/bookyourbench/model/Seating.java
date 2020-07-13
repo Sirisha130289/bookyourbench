@@ -31,7 +31,7 @@ public class Seating {
     }
 
     public LocalDate getDate() {
-                return date;
+                    return date;
     }
 
     public void setDate(LocalDate date) {
