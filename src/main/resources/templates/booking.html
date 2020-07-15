@@ -6,45 +6,45 @@
     <title>Welcome to the Reservation Page</title>
 </head>
 <body>
-<h2>Book your Bench</h2>
 <div>
     <form>
         <div>
-            <label for="buildings"><b>Building</b></label>
-            <select name="buildings" id="building">
-                <option value="Tower1">Tower 1</option>
-                <option value="Tower2">Tower 2</option>
-                <option value="Tower3">Tower 3</option>
-                <option value="Tower4">Tower 4</option>
-                <option value="Tower5">Tower 5</option>
-                <br></br>
+            <label for="buildings"><b>Building : </b></label>
+            <select name="buildings" id="buildings">
+                <option value="Select Building" selected disabled>Select Building</option>
+                <option th:each="buildingName : ${buildingFloorMap.keySet()}" th:attr="value=${buildingName}"
+                        th:text="${buildingName}"></option>
             </select>
         </div>
 
-        <div>
-            <label for="floors"><b>Floor</b></label>
-            <select name="floors" id="floor">
-                <option value="Floor1">Floor 1</option>
-                <option value="Floor2">Floor 2</option>
-                <option value="Floor3">Floor 3</option>
-                <option value="Floor4">Floor 4</option>
-                <option value="Floor5">Floor 5</option>
-                <br></br>
-            </select>
-        </div>
-        <div>
-            <label for="reservationDate"><b>Reservation date</b></label>
-            <select name="date" id="date">
-                <option value="Floor1">Floor 1</option>
-                <option value="Floor2">Floor 2</option>
-                <option value="Floor3">Floor 3</option>
-                <option value="Floor4">Floor 4</option>
-                <option value="Floor5">Floor 5</option>
-                <br></br>
-                <p>Available seats : </p>
+        <div th:each="buildingName : ${buildingFloorMap.keySet()}" th:attr="id=${buildingName}">
 
-        </div>
+            <div th:attr="id=${buildingName} + '-floor'">
+                <label for="floors"><b>Floor : </b></label>
+                <select name="floors" id="floors">
+                    <option value="Select Floor" selected disabled>Select Floor</option>
+                    <div></div>
+                    <option th:each="floor, stats : ${buildingFloorMap.get(buildingName)}"
+                            th:attr="value=${floor.keySet().iterator().next()}"
+                            th:text="${floor.keySet().iterator().next()}"></option>
+                    <br></br>
+                </select>
+            </div>
 
+            <div th:each="floor, stats : ${buildingFloorMap.get(buildingName)}"
+                 th:with="floorNo=${floor.keySet().iterator().next()}"
+                 th:attr="id=${buildingName}+ '-' + ${floorNo}+'-dates'">
+
+                <label for="dates"><b>Date : </b></label>
+                <select name="dates" id="dates">
+                    <option value="Select Date" selected disabled>Select Date</option>
+                    <div></div>
+                    <option th:each="entry : ${floor.get(floorNo)}" th:attr="value=${entry}"
+                            th:text="${entry}"></option>
+                    <br></br>
+                </select>
+            </div>
+        </div>
     </form>
 </div>
 </body>
