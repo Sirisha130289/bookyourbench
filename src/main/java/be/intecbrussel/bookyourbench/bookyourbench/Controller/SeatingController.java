@@ -46,13 +46,11 @@ public class SeatingController {
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
                 dateList.forEach(date -> {
-                    System.out.println(date);
                     String text = date.format(dtf);
                     dateStrList.add(text);
                 });
 
                 floorDateMap.put(floorNo, dateStrList);
-
 
 
                 buildingFloorSet.add(floorDateMap);

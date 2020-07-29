@@ -39,11 +39,17 @@ public class ReservationDaoImpl implements ReservationInfoDao {
     @Override
     public boolean insertReservation(ReservationInfo reservationInfo) {
         String statusInsertSQL = "INSERT INTO RESERVATION_INFO VALUES (?,?,?,?,?,?)";
-        int result = jdbcTemplate.update(statusInsertSQL, reservationInfo.getBuildingName(),
-                reservationInfo.getFloorNo(), reservationInfo.getDateOfReservation(),
-                reservationInfo.getLastUpdatedDate(), reservationInfo.getUserId(),
-                reservationInfo.getStatus());
-        return true;
+        int result = jdbcTemplate.update(statusInsertSQL, reservationInfo.getUserId(), reservationInfo.getDateOfReservation(), reservationInfo.getBuildingName(),
+                reservationInfo.getFloorNo(),
+                reservationInfo.getStatus(),
+                reservationInfo.getLastUpdatedDate()
+        );
+
+        if (result > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -55,10 +61,10 @@ public class ReservationDaoImpl implements ReservationInfoDao {
     }
 
     @Override
-    public boolean cancelReservation(int id, LocalDate date) {
-        String updateCancelledStatus = "UPDATE RESERVATION_INFO SET STATUS='CANCELLED', LAST_UPDATED_DATE=SYSDATE" +
-                " WHERE USER_ID=? AND DATE_OF_RESERVATION=?";
-        int result = jdbcTemplate.update(updateCancelledStatus, id, date);
+    public boolean cancelReservation(int id, String buildingName, String floor, LocalDate date) {
+        String updateCancelledStatus = "UPDATE RESERVATION_INFO SET STATUS='CANCELLED', LAST_UPDATED_DATE=sysdate() " +
+                " WHERE USER_ID=? AND DATE_OF_RESERVATION=? AND BUILDING_NAME=? AND FLOOR_NO=?";
+        int result = jdbcTemplate.update(updateCancelledStatus, id, date, buildingName, floor);
         return true;
     }
 
@@ -72,7 +78,8 @@ public class ReservationDaoImpl implements ReservationInfoDao {
             reservationInfo.setBuildingName((String) stringObjectMap.get("BUILDING_NAME"));
             reservationInfo.setFloorNo((String) stringObjectMap.get("FLOOR_NAME"));
             reservationInfo.setDateOfReservation(((Date) stringObjectMap.get("DATE_OF_RESERVATION")).toLocalDate());
-            reservationInfo.setUserId((Integer) stringObjectMap.get("SEATS_BOOKED"));
+            Integer seatsBooked = (Integer) stringObjectMap.get("SEATS_BOOKED") ;
+            reservationInfo.setUserId(seatsBooked == null ? 0 : seatsBooked);
             reservationInfo.setStatus((String) stringObjectMap.get("STATUS"));
             reservationInfos.add(reservationInfo);
         });

@@ -1,6 +1,11 @@
-table, tr, th, td {
-    border: 1px solid black;
+h2 {
+    text-align: center;
 }
+
+h3 {
+    text-align: center;
+}
+
 
 body {
     text-align: center;
@@ -11,11 +16,18 @@ body {
     background-size: cover;
 }
 
-tr th {
-
+id {
+    display: inline-block;
+    width: 450px;
+    height: 25px;
+    border-radius: 5px;
+    background: #e6e6e6;
+    margin-bottom: 10px;
     text-align: center;
 }
-table{
-    display: inline-block;
-    text-align: center;
+
+
+button {
+    width: 150px;
+    margin-bottom: 10px;
 }

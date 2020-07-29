@@ -1,26 +1,42 @@
-body {
+h2 {
+    text-align: center;
+}
 
+
+form {
+    border: 3px solid #f1f1f1;
+    display: contents;
+    width: 300px;
+    margin: auto;
+}
+
+
+body {
+    text-align: center;
+    background-image: url("background.jpg");
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    height: 100%;
+    background-position: center;
     background-size: cover;
 }
 
-#form_login {
-    width: 25%;
-    height: 150px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-    border: 2px solid #000000;
-    border-radius: 4px;
-    resize: none;
 
-    height: 200px;
-    width: 400px;
-    margin-top: 230px;
-    margin-left: 470px;
-
+input {
+    display: inline-block;
+    width: 200px;
+    height: 25px;
+    border-radius: 5px;
+    background: #e6e6e6;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-label {
-    color: black;
+img.avatar {
+    width: 60%;
+    border-radius: 50%;
 }
+
+button {
+    width: 100px;
+}
+

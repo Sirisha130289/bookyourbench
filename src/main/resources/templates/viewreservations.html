@@ -18,19 +18,39 @@
             <th>Building</th>
             <th>Floor</th>
             <th>Status</th>
-            <th>Last Updated Date</th>
+            <th>Activity Date</th>
+            <th>Action</th>
         </tr>
         <tr th:each="reservation : ${reservations}">
             <td th:text="${reservation.getUserId()}"></td>
-            <td th:text="${reservation.getDateOfReservation()}"></td>
+            <td th:text="${#temporals.format(reservation.getDateOfReservation(), 'dd-MM-yyyy')}"></td>
             <td th:text="${reservation.getBuildingName()}"></td>
             <td th:text="${reservation.getFloorNo()}"></td>
             <td th:text="${reservation.getStatus()}"></td>
-            <td th:text="${reservation.getLastUpdatedDate()}"></td>
+            <td th:text="${#temporals.format(reservation.getLastUpdatedDate(), 'dd-MM-yyyy')}"></td>
+            <td>
+                <form action="#" th:action="@{'/cancelreservation'}" th:method="POST">
+                    <button onclick="confirmSelection()" th:if="${reservation.getStatus() == 'BOOKED'}"
+                            value="Cancel Reservation">Cancel Reservation
+                    </button>
+                    <!-- Create hidden input fields to store the building, floor, date values to send to controller when cancel is clicked-->
+                    <input type="hidden" name="building" th:attr="value=${reservation.getBuildingName()}"/>
+                    <input type="hidden" name="floor" th:attr="value=${reservation.getFloorNo()}"/>
+                    <input type="hidden" name="date"
+                           th:attr="value=${#temporals.format(reservation.getDateOfReservation(), 'dd-MM-yyyy')}"/>
+                </form>
+            </td>
         </tr>
     </table>
-
 </div>
-
+<script>
+    function confirmSelection() {
+        if(confirm("Do you want to cancel the reservation?")){
+            return true;
+        } else {
+            event.preventDefault();
+        }
+    }
+</script>
 </body>
 </html>

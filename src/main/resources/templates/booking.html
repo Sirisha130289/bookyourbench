@@ -1,51 +1,104 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
+    <link rel="stylesheet" href="booking.css">
     <meta charset="UTF-8">
     <title>Welcome to the Reservation Page</title>
+    <!-- Here we are using Javascript -->
+    <script>
+
+        function showfloordropdown(selectedBuilding) {
+
+            const elems = document.body.getElementsByTagName('div'); // get elements by tagName div
+
+            // retrieve all div elements and hide everything except main container and buildings dropdown
+            for (var i in elems) {
+                if (elems[i] && elems[i].id && elems[i].id != 'container' && elems[i].id != 'buildings-div') {
+                    elems[i].style.display = "none";
+                }
+            }
+
+            document.getElementById("submit").disabled = true;
+            document.getElementById("buildings-" + selectedBuilding.value).style.display = "block";
+            document.getElementById("buildings-" + selectedBuilding.value + "-floor-div").style.display = "block";
+        }
+
+        function showfloordatesdropdown(floorOption) {
+
+            const elems = document.body.getElementsByTagName('div');
+
+            for (var i in elems) {
+                if (elems[i] && elems[i].id && elems[i].id.includes('dates')) {
+                    elems[i].style.display = "none";
+                }
+            }
+
+            document.getElementById("submit").disabled = true;
+            document.getElementById(floorOption.id + '-' + floorOption.value + "-dates-div").style.display = "block";
+            document.getElementById(floorOption.id + '-' + floorOption.value + "-dates").style.display = "block";
+        }
+
+        function enablesubmit() {
+            document.getElementById("submit").disabled = false;
+        }
+
+    </script>
 </head>
 <body>
-<div>
-    <form>
-        <div>
+<div id="container">
+    <form method="post" action="/confirmbooking">
+        <br/>
+        <br/>
+
+        <div id="buildings-div">
             <label for="buildings"><b>Building : </b></label>
-            <select name="buildings" id="buildings">
+            <select name="building" id="buildings" onchange="showfloordropdown(this)">
                 <option value="Select Building" selected disabled>Select Building</option>
                 <option th:each="buildingName : ${buildingFloorMap.keySet()}" th:attr="value=${buildingName}"
                         th:text="${buildingName}"></option>
+                <!-- For each building name in map's keyset, add a attribute value and text with building name as option -->
             </select>
         </div>
 
-        <div th:each="buildingName : ${buildingFloorMap.keySet()}" th:attr="id=${buildingName}">
-
-            <div th:attr="id=${buildingName} + '-floor'">
+        <div th:each="buildingName : ${buildingFloorMap.keySet()}" th:attr="id='buildings-' + ${buildingName}"
+             style="display: none"> <!-- For each building in map's keyset, add an id attribute with building name and hide it-->
+            <br/>
+            <div th:attr="id='buildings-' + ${buildingName} + '-floor-div'" style="display: none">
                 <label for="floors"><b>Floor : </b></label>
-                <select name="floors" id="floors">
+                <select name="floor" th:attr="id='buildings-' + ${buildingName} + '-floor'"
+                         onchange="showfloordatesdropdown(this)">
                     <option value="Select Floor" selected disabled>Select Floor</option>
-                    <div></div>
-                    <option th:each="floor, stats : ${buildingFloorMap.get(buildingName)}"
+                    <option th:each="floor : ${buildingFloorMap.get(buildingName)}"
                             th:attr="value=${floor.keySet().iterator().next()}"
                             th:text="${floor.keySet().iterator().next()}"></option>
-                    <br></br>
                 </select>
             </div>
-
+            <br/>
             <div th:each="floor, stats : ${buildingFloorMap.get(buildingName)}"
                  th:with="floorNo=${floor.keySet().iterator().next()}"
-                 th:attr="id=${buildingName}+ '-' + ${floorNo}+'-dates'">
+                 th:attr="id='buildings-' + ${buildingName}+ '-floor-' + ${floorNo}+'-dates-div'" style="display: none">
 
                 <label for="dates"><b>Date : </b></label>
-                <select name="dates" id="dates">
+                <select name="date" th:attr="id='buildings-' + ${buildingName}+ '-floor-' + ${floorNo}+'-dates'"
+                        onchange="enablesubmit()">
                     <option value="Select Date" selected disabled>Select Date</option>
-                    <div></div>
-                    <option th:each="entry : ${floor.get(floorNo)}" th:attr="value=${entry}"
-                            th:text="${entry}"></option>
-                    <br></br>
+                    <option th:each="date : ${floor.get(floorNo)}" th:attr="value=${date}"
+                            th:text="${date}"></option>
                 </select>
             </div>
         </div>
+        <br/><br/>
+        <button onclick="confirmSelection()" type="submit" id="submit" value="Submit" disabled>Submit</button>
     </form>
 </div>
+<script>
+    function confirmSelection() {
+        if(confirm("Do you want to book the reservation?")){
+            return true;
+        } else {
+            event.preventDefault();
+        }
+    }
+</script>
 </body>
 </html>

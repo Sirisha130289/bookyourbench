@@ -2,15 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="reservationpage.css">
     <meta charset="UTF-8">
     <title>Welcome</title>
 </head>
 <body>
-<h2>Welcome</h2>
-<p>Book your bench for your work</p>
+<h2>Hi</h2>
+<h3>Reserve your next working place</h3>
 <div>
+    <!-- There are 2 forms in this template with method type as get and redirecting to two different pages.
+     -->
     <form id="reservation-form" method="get" action="/bookseat"></form>
     <button type="submit" form="reservation-form">Book a seat</button>
+    <br/>
 </div>
 <div>
     <form id="view-reservation-form" method="get" action="/viewreservations"></form>
