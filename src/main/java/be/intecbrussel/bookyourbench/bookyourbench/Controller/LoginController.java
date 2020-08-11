@@ -1,7 +1,9 @@
 package be.intecbrussel.bookyourbench.bookyourbench.Controller;
 
+import be.intecbrussel.bookyourbench.bookyourbench.model.ReservationInfo;
 import be.intecbrussel.bookyourbench.bookyourbench.model.UserInformation;
 import be.intecbrussel.bookyourbench.bookyourbench.service.implementations.AuthenticationServiceImpl;
+import be.intecbrussel.bookyourbench.bookyourbench.service.implementations.ReservationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class LoginController {
@@ -18,6 +21,9 @@ public class LoginController {
      * We are here declaring a variable authService for the service impl class.
      */
     private AuthenticationServiceImpl authService;
+
+    @Autowired
+    private ReservationServiceImpl reservationService;
 
     // setting injection autowiring
     @Autowired
@@ -65,6 +71,16 @@ public class LoginController {
                 model.addAttribute("error", "Combination of UserId and Password are incorrect.");
                 template = "loginpage";
             } else {
+
+                List<ReservationInfo> reservationInfoList = reservationService.viewExistingReservationsForUserId(userId);
+
+                long bookedCount = reservationInfoList.stream().filter(res -> "BOOKED".equals(res.getStatus())).count();
+                boolean canReserve = bookedCount < 2;
+
+                System.out.println(user.getFirstName());
+                System.out.println("CanReserve : " + canReserve);
+                model.addAttribute("username", user.getFirstName());
+                model.addAttribute("canReserve", canReserve);
                 session.setAttribute("userId", userId);
                 template = "reservationpage";
             }
