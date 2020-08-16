@@ -4,9 +4,11 @@ import be.intecbrussel.bookyourbench.bookyourbench.model.Seating;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface SeatingService {
-    public List<Seating> viewAvailableSeats();
+    public Map<String, Set<Map<String, List<String>>>> retrieveAvailableSeats();
 
     public boolean updateSeat(String status, String building, String floor, LocalDate date);
 

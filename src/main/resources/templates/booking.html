@@ -4,6 +4,13 @@
     <link rel="stylesheet" href="booking.css">
     <meta charset="UTF-8">
     <title>Welcome to the Reservation Page</title>
+
+    <style>
+        body {
+            font-family: Verdana, Arial, sans-serif;
+        }
+    </style>
+
     <!-- Here we are using Javascript -->
     <script>
 
@@ -35,20 +42,38 @@
 
             document.getElementById("submit").disabled = true;
             document.getElementById(floorOption.id + '-' + floorOption.value + "-dates-div").style.display = "block";
-            document.getElementById(floorOption.id + '-' + floorOption.value + "-dates").style.display = "block";
+            document.getElementById(floorOption.id + '-' + floorOption.value + "-dates").style.display = "inline-block";
+            document.getElementById(floorOption.id + '-' + floorOption.value + "-dates").style.margin = "auto";
         }
 
         function enablesubmit() {
             document.getElementById("submit").disabled = false;
         }
 
+        function resetoptions() {
+            document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+
+            const elems = document.body.getElementsByTagName('div'); // get elements by tagName div
+
+            // retrieve all div elements and hide everything except main container and buildings dropdown
+            for (var i in elems) {
+                if (elems[i] && elems[i].id && elems[i].id != 'container' && elems[i].id != 'buildings-div') {
+                    elems[i].style.display = "none";
+                }
+            }
+
+            document.getElementById("submit").disabled = true;
+        }
+
     </script>
 </head>
-<body>
+<body onload="resetoptions()">
 <div id="container">
     <form method="post" action="/confirmbooking">
         <br/>
         <br/>
+
+        <h3 style="align-items: center">When do you want to work safely at office?</h3>
 
         <div id="buildings-div">
             <label for="buildings"><b>Building : </b></label>
@@ -78,7 +103,9 @@
                  th:with="floorNo=${floor.keySet().iterator().next()}"
                  th:attr="id='buildings-' + ${buildingName}+ '-floor-' + ${floorNo}+'-dates-div'" style="display: none">
 
-                <label for="dates"><b>Date : </b></label>
+                <label style="display: inline-block"
+                       th:attr="for='buildings-' + ${buildingName}+ '-floor-' + ${floorNo}+'-dates'"><b>Date
+                    : </b></label>
                 <select name="date" th:attr="id='buildings-' + ${buildingName}+ '-floor-' + ${floorNo}+'-dates'"
                         onchange="enablesubmit()">
                     <option value="Select Date" selected disabled>Select Date</option>
@@ -89,6 +116,10 @@
         </div>
         <br/><br/>
         <button onclick="confirmSelection()" type="submit" id="submit" value="Submit" disabled>Submit</button>
+        <button onclick="resetoptions()" type="reset" id="reset" value="Reset">Reset</button>
+        <br/>
+        <!--/*@thymesVar id="error" type=""*/-->
+        <p style="color: red" th:text="${error}"></p>
     </form>
 </div>
 <script>

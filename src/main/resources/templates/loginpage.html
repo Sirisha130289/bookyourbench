@@ -3,11 +3,16 @@
 <head>
     <link rel="stylesheet" href="loginpage1.css">
     <meta charset="UTF-8">
-    <title>Welcome to Book your Bench Login Page</title>
+    <title>Book your Bench</title>
+    <style>
+        body {
+            font-family: Verdana, Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
-
-<h2>Welcome to Book your Bench Login Page</h2>
+<br />
+<h2>Welcome to Book your Bench</h2>
 <form id="form_login" method="post" action="/authenticateuser">
     <div class="imgcontainer">
         <img src="img_avatar2.png" alt="Avatar" class="avatar">
@@ -25,7 +30,7 @@
             <button type="submit">Login</button>
 
             <!--/*@thymesVar id="error" type=""*/-->
-            <p th:text="${error}"></p>
+            <p style="color: red" th:text="${error}"></p>
         </div>
     </div>
 </form>

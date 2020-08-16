@@ -5,10 +5,16 @@
     <link rel="stylesheet" href="reservationpage.css">
     <meta charset="UTF-8">
     <title>Welcome</title>
+
+    <style>
+        body {
+            font-family: Verdana, Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
 <!--/*@thymesVar id="username" type=""*/-->
-<h2 th:text="'Hi ' + ${username}"></h2>
+<h2 style="margin-top: 5%"  th:text="'Hi ' + ${username}"></h2>
 <h3>Reserve your next working place</h3>
 <div>
     <!-- There are 2 forms in this template with method type as get and redirecting to two different pages.

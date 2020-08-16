@@ -6,9 +6,15 @@
     <link rel="stylesheet" href="viewreservations.css">
     <meta charset="UTF-8">
     <title>View Reservations</title>
+
+    <style>
+        body {
+            font-family: Verdana, Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
-<h2>View your Reservations</h2>
+<h2 style="margin-top: 5%">View your Reservations</h2>
 <div>
 
     <table>
@@ -43,9 +49,20 @@
         </tr>
     </table>
 </div>
+<br/>
+<div>
+    <form method="get" action="/bookseat">
+        <div th:switch="${canReserve}">
+            <button type="submit" value="Book another seat" th:case="true">Book another seat</button>
+            <button type="submit" value="Book another seat" disabled th:case="false">Book another seat</button>
+        </div>
+    </form>
+</div>
+
+
 <script>
     function confirmSelection() {
-        if(confirm("Do you want to cancel the reservation?")){
+        if (confirm("Do you want to cancel the reservation?")) {
             return true;
         } else {
             event.preventDefault();
