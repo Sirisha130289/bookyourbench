@@ -4,6 +4,7 @@ import be.intecbrussel.bookyourbench.bookyourbench.model.ReservationInfo;
 import be.intecbrussel.bookyourbench.bookyourbench.model.UserInformation;
 import be.intecbrussel.bookyourbench.bookyourbench.service.implementations.AuthenticationServiceImpl;
 import be.intecbrussel.bookyourbench.bookyourbench.service.implementations.ReservationServiceImpl;
+import be.intecbrussel.bookyourbench.bookyourbench.service.interfaces.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,8 @@ public class LoginController {
 
     @Autowired
     private ReservationServiceImpl reservationService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     // setting injection autowiring
     @Autowired
@@ -82,6 +85,9 @@ public class LoginController {
                 model.addAttribute("username", user.getFirstName());
                 model.addAttribute("canReserve", canReserve);
                 session.setAttribute("userId", userId);
+
+                userInfoService.updateUserInfo(userId);
+
                 template = "reservationpage";
             }
         }

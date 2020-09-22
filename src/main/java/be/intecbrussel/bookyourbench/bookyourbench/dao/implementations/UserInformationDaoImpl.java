@@ -68,11 +68,11 @@ public class UserInformationDaoImpl implements UserInformationDao {
     @Override
     public boolean updateUserInformation(int id) {
 
-        String updateUserInfoSql = "UPDATE USER_INFORMATION SET LAST_LOGGED_IN='SYSDATE' WHERE USER_ID = ?";
+        String updateUserInfoSql = "UPDATE USER_INFORMATION SET LAST_LOGGED_IN=sysdate() WHERE USER_ID = ?";
 
         UserInformation userInformation = getUserById(id);
         if (userInformation != null) {
-            int executed = jdbcTemplate.update(updateUserInfoSql, userInformation.getFirstName(),
+            int executed = jdbcTemplate.update(updateUserInfoSql,
                     userInformation.getUserId());
             if (executed != 0) {
                 return true;

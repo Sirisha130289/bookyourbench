@@ -33,16 +33,7 @@ public class SeatingServiceImpl implements SeatingService {
         return buildingFloorMap;
     }
 
-    @Override
-    public boolean updateSeat(String status, String building, String floor, LocalDate date) {
-        return seatingDao.updateSeatsBookedAndReservableSeats(status, building, floor, date);
-    }
 
-    /**
-     * @param s
-     * @param seatingList
-     * @param buildingFloorMap
-     */
     private void prepareBuildingFloorMap(Seating s, List<Seating> seatingList, Map<String, Set<Map<String, List<String>>>> buildingFloorMap) {
         {
             String buildingName = s.getBuildingName();

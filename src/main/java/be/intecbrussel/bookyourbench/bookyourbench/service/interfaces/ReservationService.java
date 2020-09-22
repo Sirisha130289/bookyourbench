@@ -7,8 +7,6 @@ import java.util.List;
 public interface ReservationService {
     public List<ReservationInfo> viewExistingReservationsForUserId(int id);
 
-    public List<ReservationInfo> getAllReservations();
-
     public boolean confirmReservation(int id, String buildingName, String floor, String date);
 
     public boolean cancelReservation(int userId, String building, String floor, String date);

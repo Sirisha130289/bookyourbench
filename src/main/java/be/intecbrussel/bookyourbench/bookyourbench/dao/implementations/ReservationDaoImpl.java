@@ -18,6 +18,9 @@ public class ReservationDaoImpl implements ReservationInfoDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private SeatingDaoImpl seatingDao;
+
     @Override
     public List<ReservationInfo> viewExistingReservationsForUserId(int id) {
         String viewReservations = "SELECT * FROM RESERVATION_INFO WHERE USER_ID=?";
@@ -46,43 +49,23 @@ public class ReservationDaoImpl implements ReservationInfoDao {
         );
 
         if (result > 0) {
+            seatingDao.updateSeatsBookedAndReservableSeats(reservationInfo.getStatus(), reservationInfo.getBuildingName(), reservationInfo.getFloorNo(), reservationInfo.getDateOfReservation());
             return true;
         }
 
         return false;
     }
 
-    @Override
-    public boolean updateReservation(int id, LocalDate date) {
-        String updateBookedStatus = "UPDATE RESERVATION_INFO SET STATUS='BOOKED',LAST_UPDATED_DATE=SYSDATE" +
-                " WHERE USER_ID =?AND DATE_OF_RESERVATION =?";
-        int result = jdbcTemplate.update(updateBookedStatus, id, date);
-        return true;
-    }
 
     @Override
     public boolean cancelReservation(int id, String buildingName, String floor, LocalDate date) {
         String updateCancelledStatus = "UPDATE RESERVATION_INFO SET STATUS='CANCELLED', LAST_UPDATED_DATE=sysdate() " +
                 " WHERE USER_ID=? AND DATE_OF_RESERVATION=? AND BUILDING_NAME=? AND FLOOR_NO=?";
         int result = jdbcTemplate.update(updateCancelledStatus, id, date, buildingName, floor);
+
+        seatingDao.updateSeatsBookedAndReservableSeats("CANCELLED", buildingName, floor, date);
+
         return true;
     }
 
-    @Override
-    public List<ReservationInfo> getAllReservations() {
-        String getAllReservationsSQL = "SELECT * FROM RESERVATION_INFO";
-        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(getAllReservationsSQL);
-        List<ReservationInfo> reservationInfos = new ArrayList<>();
-        mapList.forEach(stringObjectMap -> {
-            ReservationInfo reservationInfo = new ReservationInfo();
-            reservationInfo.setBuildingName((String) stringObjectMap.get("BUILDING_NAME"));
-            reservationInfo.setFloorNo((String) stringObjectMap.get("FLOOR_NAME"));
-            reservationInfo.setDateOfReservation(((Date) stringObjectMap.get("DATE_OF_RESERVATION")).toLocalDate());
-            Integer seatsBooked = (Integer) stringObjectMap.get("SEATS_BOOKED") ;
-            reservationInfo.setUserId(seatsBooked == null ? 0 : seatsBooked);
-            reservationInfo.setStatus((String) stringObjectMap.get("STATUS"));
-            reservationInfos.add(reservationInfo);
-        });
-        return reservationInfos;
-    }
 }

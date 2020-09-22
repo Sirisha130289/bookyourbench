@@ -12,8 +12,6 @@ public interface SeatingDao {
 
     public List<Seating> retrieveAvailableSeats();
 
-    public List<Seating> viewAvailableSeatsAsPerBuildingFloorDate();
-
     public boolean updateSeatsBookedAndReservableSeats(String status, String building, String floor, LocalDate date);
 
 }

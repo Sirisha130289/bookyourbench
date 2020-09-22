@@ -13,9 +13,7 @@ public interface ReservationInfoDao {
 
     public boolean insertReservation(ReservationInfo reservationInfo);
 
-    public boolean updateReservation(int id, LocalDate date);
-
     public boolean cancelReservation(int id, String buildingName, String floor, LocalDate date);
 
-    public List<ReservationInfo> getAllReservations();
+
 }

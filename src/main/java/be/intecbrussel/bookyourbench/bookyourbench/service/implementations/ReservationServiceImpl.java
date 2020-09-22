@@ -21,10 +21,6 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.viewExistingReservationsForUserId(id);
     }
 
-    @Override
-    public List<ReservationInfo> getAllReservations() {
-        return reservationDao.getAllReservations();
-    }
 
     @Override
     public boolean confirmReservation(int id, String buildingName, String floor, String date) {
